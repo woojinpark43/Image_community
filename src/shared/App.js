@@ -34,8 +34,8 @@ function App() {
 
   return (
     <React.Fragment>
-      <Grid>
-        <Header></Header>
+      <Grid margin="auto" width="50%">
+        <Header />
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList} />
           <Route path="/login" exact component={Login} />
@@ -45,7 +45,13 @@ function App() {
         </ConnectedRouter>
       </Grid>
       <Permit>
-        <Button is_float text="+"></Button>
+        <Button
+          is_float
+          text="+"
+          _onClick={() => {
+            history.push("/write");
+          }}
+        ></Button>
       </Permit>
     </React.Fragment>
   );

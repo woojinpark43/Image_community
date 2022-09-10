@@ -54,40 +54,41 @@ const loginFB = (id, pwd) => {
 
 const signupFB = (id, pwd, user_name) => {
   return function (dispatch, getState, { history }) {
-    auth
-      .createUserWithEmailAndPassword(id, pwd)
-      .then((user) => {
-        console.log(user);
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then((res) => {
+      auth
+        .createUserWithEmailAndPassword(id, pwd)
+        .then((user) => {
 
-        auth.currentUser
-          .updateProfile({
-            displayName: user_name,
-          })
-          .then(() => {
-            dispatch(
-              setUser({
-                user_name: user_name,
-                id: id,
-                user_profile: "",
-                uid: user.user.uid,
-              })
-            );
-            history.push("/");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+          auth.currentUser
+            .updateProfile({
+              displayName: user_name,
+            })
+            .then(() => {
+              dispatch(
+                setUser({
+                  user_name: user_name,
+                  id: id,
+                  user_profile: "",
+                  uid: user.user.uid,
+                })
+              );
+              history.push("/");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
 
-        // Signed in
-        // ...
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
+          // Signed in
+          // ...
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
 
-        console.log(errorCode, errorMessage);
-        // ..
-      });
+          console.log(errorCode, errorMessage);
+          // ..
+        });
+    });
   };
 };
 

@@ -8,6 +8,9 @@ const Permit = (props) => {
 
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
 
+  console.log("is_login", is_login);
+  console.log("_session_key", _session_key, is_session);
+
   if (is_session && is_login) {
     return <React.Fragment>{props.children}</React.Fragment>;
   }

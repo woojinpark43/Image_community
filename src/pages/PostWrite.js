@@ -1,36 +1,58 @@
 import React from "react";
-import {Grid, Text, Button, Image, Input} from "../elements";
+import { Grid, Text, Button, Image, Input } from "../elements";
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 import Upload from "../shared/Upload";
 
 const PostWrite = (props) => {
-    return (
-      <React.Fragment>
+  const [contents, setContents] = React.useState("");
+  const dispatch = useDispatch();
+  const preview = useSelector((state) => state.image.preview);
+
+  const addPost = () => {
+    dispatch(postActions.addPostFB(contents));
+  };
+
+  const changeContents = (e) => {
+    setContents(e.target.value);
+  };
+
+  return (
+    <React.Fragment>
+      <Grid padding="16px">
+        <Text margin="0px" size="36px" bold>
+          Create Post
+        </Text>
+        <Upload />
+      </Grid>
+
+      <Grid>
         <Grid padding="16px">
-          <Text margin="0px" size="36px" bold>
-            게시글 작성
+          <Text margin="0px" size="24px" bold>
+            Preview Image
           </Text>
-          <Upload/>
         </Grid>
 
-        <Grid>
-          <Grid padding="16px">
-            <Text margin="0px" size="24px" bold>
-              미리보기
-            </Text>
-          </Grid>
+        <Image
+          shape="rectangle"
+          src={preview ? preview : "http://via.placeholder.com/150x150"}
+        />
+      </Grid>
 
-          <Image shape="rectangle" />
-        </Grid>
+      <Grid padding="16px">
+        <Input
+          _onChange={changeContents}
+          label="Post Context"
+          placeholder="Write Context"
+          multiLine
+        />
+      </Grid>
 
-        <Grid padding="16px">
-          <Input label="게시글 내용" placeholder="게시글 작성" multiLine />
-        </Grid>
-
-        <Grid padding="16px">
-          <Button text="게시글 작성"></Button>
-        </Grid>
-      </React.Fragment>
-    );
-}
+      <Grid padding="16px">
+        <Button text="Upload Post" _onClick={addPost}></Button>
+      </Grid>
+    </React.Fragment>
+  );
+};
 
 export default PostWrite;

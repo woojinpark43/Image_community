@@ -16,7 +16,7 @@ const Header = (props) => {
           <Grid is_flex padding="4px 16px">
             <Grid>
               <Text margin="0px" size="24px" bold>
-                헬로
+                헬롤
               </Text>
             </Grid>
 

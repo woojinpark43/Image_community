@@ -14,8 +14,6 @@ const Login = (props) => {
 
   const login = () => {
 
-    console.log(id);
-
     if(id === "" || pwd === ""){
       window.alert("아이디 혹은 비밀번호가 공란입니다! 입력해주세요!");
       return;
@@ -60,7 +58,6 @@ const Login = (props) => {
         <Button
           text="로그인하기"
           _onClick={() => {
-            console.log("로그인 했어!");
             login();
           }}
         ></Button>
