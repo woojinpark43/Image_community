@@ -3,10 +3,12 @@ import Post from "../components/Post";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import InfinityScroll from "../shared/InfinityScroll";
+import { history } from "../redux/configureStore";
+import { Grid } from "../elements";
 const PostList = (props) => {
   const dispatch = useDispatch();
   const post_list = useSelector((state) => state.post.list);
-  const user_info = useSelector((state) => state.user.user);
+  // const user_info = useSelector((state) => state.user.user);
   const is_loading = useSelector((state) => state.post.is_loading);
   const paging = useSelector((state) => state.post.paging);
 
@@ -26,10 +28,21 @@ const PostList = (props) => {
         loading={is_loading}
       >
         {post_list.map((p, idx) => {
-          if (user_info && p.user_info.user_id === user_info.uid) {
-            return <Post key={p.id} {...p} is_me />;
-          }
-          return <Post key={p.id} {...p} />;
+          // if (user_info && p.user_info.user_id === user_info.uid) {
+          //   return <Post key={p.id} {...p} is_me />;
+          // }
+          return (
+            <Grid
+              bg="#ffffff"
+              margin="8px 0px"
+              key={p.id}
+              _onClick={() => {
+                history.push(`/post/${p.id}`);
+              }}
+            >
+              <Post key={p.id} {...p} />
+            </Grid>
+          );
         })}
       </InfinityScroll>
     </React.Fragment>

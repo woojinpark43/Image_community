@@ -5,16 +5,24 @@ import { firestore } from "../../shared/firebase";
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const LOADING = "LOADING";
+const SETPOSTWITHID = "SETPOSTWITHID";
+const ADD_COMMENT = "ADD_COMMENT";
+
 const setPost = createAction(SET_POST, (post_list, paging) => ({
   post_list,
   paging,
 }));
+const setPostWithID = createAction(SETPOSTWITHID, (post) => ({ post }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const loading = createAction(LOADING, (loading) => ({ loading }));
+const addComment = createAction(ADD_COMMENT, () => ({}));
+
 const initialState = {
   list: [],
   paging: { start: null, next: null, size: 3 },
   is_loading: false,
+  post_with_id: null,
+  changed: false,
 };
 
 const initialPost = {
@@ -68,6 +76,7 @@ const getPostFB = (start = null, size = 3) => {
             image_url: _post.image_url,
             comment_cnt: _post.comment_cnt,
             insert_dt: _post.insert_dt,
+            comments: [..._post.comments],
           };
           post_list.push(post);
         });
@@ -76,6 +85,37 @@ const getPostFB = (start = null, size = 3) => {
 
         dispatch(setPost(post_list, paging));
       });
+  };
+};
+
+const getPostWithID = (id) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection("post");
+
+    postDB
+      .doc(id)
+      .get()
+      .then((docs) => {
+        let _post = docs.data();
+        console.log("this is _post", _post);
+        const post = _post;
+
+        dispatch(setPostWithID(post));
+      });
+  };
+};
+
+const addPostComment = (id, new_comment, prevComment) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection("post");
+    let comments = [...prevComment];
+    console.log(comments);
+    comments.push(new_comment)
+    console.log(comments);
+    const update_Data = { comments: comments };
+    postDB.doc(id).update(update_Data);
+
+    dispatch(addComment());
   };
 };
 
@@ -91,6 +131,7 @@ const addPostFB = (contents = "") => {
     };
     const _post = {
       ...initialPost,
+      comments: [],
       contents: contents,
       image_url: _image_url,
       insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
@@ -126,6 +167,14 @@ export default handleActions(
       produce(state, (draft) => {
         draft.is_loading = action.payload.loading;
       }),
+    [SETPOSTWITHID]: (state, action) =>
+      produce(state, (draft) => {
+        draft.post_with_id = action.payload.post;
+      }),
+    [ADD_COMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.changed = true;
+      }),
   },
   initialState
 ); // action creator export
@@ -134,6 +183,8 @@ const actionCreators = {
   addPost,
   getPostFB,
   addPostFB,
-  loading
+  loading,
+  getPostWithID,
+  addPostComment,
 };
 export { actionCreators };

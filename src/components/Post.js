@@ -1,8 +1,4 @@
 import React from "react";
-// import Grid from "../elements/Grid";
-// import Image from "../elements/Image";
-// import Text from "../elements/Text";
-
 import { Grid, Image, Text } from "../elements";
 
 const Post = (props) => {
