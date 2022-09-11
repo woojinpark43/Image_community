@@ -30,6 +30,7 @@ function App() {
 
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
+  const [width, setWidth] = React.useState(window.innerWidth);
 
   React.useEffect(() => {
     if (is_session) {
@@ -37,9 +38,22 @@ function App() {
     }
   }, []);
 
+  React.useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+
+  const isMobile = width <= 768;
+
   return (
     <React.Fragment>
-      <Grid margin="auto" width="30%">
+      <Grid margin="auto" width={isMobile ? "350px" : "35%"}>
         <Header />
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList} />
@@ -52,31 +66,29 @@ function App() {
       </Grid>
 
       <Permit>
-        <Grid width="50px" height="50px">
-          <Button
-            background="none"
-            is_float
-            bottom="115px"
-            _onClick={() => {
-              history.push("/write");
-            }}
-          >
-            <Image shape="rectangle" src={post}></Image>
-          </Button>
-        </Grid>
-      </Permit>
-      <Grid width="50px" height="50px">
         <Button
           background="none"
           is_float
-          bottom="50px"
+          bottom="115px"
+          left={isMobile ? "85%" : "70%"}
           _onClick={() => {
-            history.push("/");
+            history.push("/write");
           }}
         >
-          <Image shape="rectangle" src={back}></Image>
+          <Image shape="float" src={post} />
         </Button>
-      </Grid>
+      </Permit>
+      <Button
+        background="none"
+        is_float
+        left={isMobile ? "85%" : "70%"}
+        bottom="50px"
+        _onClick={() => {
+          history.push("/");
+        }}
+      >
+        <Image shape="circle" src={back} />
+      </Button>
     </React.Fragment>
   );
 }

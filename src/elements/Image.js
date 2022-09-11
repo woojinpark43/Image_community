@@ -18,6 +18,9 @@ const Image = (props) => {
       </AspectOutter>
     );
   }
+  if (shape === "float") {
+    return <ImageFloat {...styles}></ImageFloat>;
+  }
 
   return <React.Fragment></React.Fragment>;
 };
@@ -46,6 +49,15 @@ const ImageCircle = styled.div`
   width: var(--size);
   height: var(--size);
   border-radius: var(--size);
+  background-image: url("${(props) => props.src}");
+  background-size: cover;
+  margin: 2px;
+`;
+
+const ImageFloat = styled.div`
+  --size: ${(props) => props.size}px;
+  width: var(--size);
+  height: var(--size);
   background-image: url("${(props) => props.src}");
   background-size: cover;
   margin: 2px;

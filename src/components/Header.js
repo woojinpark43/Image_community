@@ -52,7 +52,12 @@ const Header = (props) => {
       <React.Fragment>
         <Grid is_flex padding="4px 16px">
           <Grid width="75px" height="75px">
-            <Button background="none">
+            <Button
+              background="none"
+              _onClick={() => {
+                history.replace("/");
+              }}
+            >
               <Image shape="rectangle" src={logo}></Image>
             </Button>
           </Grid>

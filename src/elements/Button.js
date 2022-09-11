@@ -11,12 +11,18 @@ const Button = (props) => {
     width,
     background,
     bottom,
+    left,
   } = props;
 
   if (is_float) {
     return (
       <React.Fragment>
-        <FloatButton onClick={_onClick} bottom={bottom} background={background}>
+        <FloatButton
+          onClick={_onClick}
+          bottom={bottom}
+          background={background}
+          left={left}
+        >
           {text ? text : children}
         </FloatButton>
       </React.Fragment>
@@ -46,6 +52,7 @@ Button.defaultProps = {
   width: "100%",
   background: false,
   bottom: false,
+  left: false,
 };
 
 const ElButton = styled.button`
@@ -62,13 +69,14 @@ const ElButton = styled.button`
 const FloatButton = styled.button`
   width: 75px;
   height: 75px;
-  left: 75%;
+  ${(props) => (props.left ? `left: ${props.left};` : "")}
   background-color: #ffffff;
   color: #ffffff;
   box-sizing: border-box;
   font-size: 36px;
   font-weight: 800;
   position: fixed;
+  ${(props) => (props.background ? `background: ${props.background};` : "")}
   ${(props) => (props.bottom ? `bottom: ${props.bottom};` : "bottom: 50px;")}
   right: 16px;
   text-align: center;
