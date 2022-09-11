@@ -17,15 +17,19 @@ const CommentWrite = (props) => {
       window.alert("please enter comment before submitting :)");
     }
 
+    let user_profile =
+      user_info.user_profile === undefined ? "" : user_info.user_profile;
     const commentData = {
       contents: comment,
       insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
       user_id: user_info.uid,
       user_name: user_info.user_name,
-      user_profile: user_info.user_profile,
+      user_profile: user_profile,
     };
 
-    dispatch(postActions.addPostComment(postID, comment_cnt, commentData, comments));
+    dispatch(
+      postActions.addPostComment(postID, comment_cnt, commentData, comments)
+    );
     setComment("");
   };
 
