@@ -7,6 +7,8 @@ const ADD_POST = "ADD_POST";
 const LOADING = "LOADING";
 const SETPOSTWITHID = "SETPOSTWITHID";
 const ADD_COMMENT = "ADD_COMMENT";
+const CHANGED = "CHANGED";
+const SCROLL = "SCROLL";
 
 const setPost = createAction(SET_POST, (post_list, paging) => ({
   post_list,
@@ -16,6 +18,8 @@ const setPostWithID = createAction(SETPOSTWITHID, (post) => ({ post }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const loading = createAction(LOADING, (loading) => ({ loading }));
 const addComment = createAction(ADD_COMMENT, () => ({}));
+const changed = createAction(CHANGED, () => ({}));
+const scroll = createAction(SCROLL, (value) => ({ value }));
 
 const initialState = {
   list: [],
@@ -23,6 +27,8 @@ const initialState = {
   is_loading: false,
   post_with_id: null,
   changed: false,
+  postCommentList: true,
+  prevScroll: 0,
 };
 
 const initialPost = {
@@ -97,7 +103,6 @@ const getPostWithID = (id) => {
       .get()
       .then((docs) => {
         let _post = docs.data();
-        console.log("this is _post", _post);
         const post = _post;
 
         dispatch(setPostWithID(post));
@@ -105,17 +110,27 @@ const getPostWithID = (id) => {
   };
 };
 
-const addPostComment = (id, new_comment, prevComment) => {
+const addPostComment = (id, comment_cnt, new_comment, prevComment) => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     let comments = [...prevComment];
-    console.log(comments);
-    comments.push(new_comment)
-    console.log(comments);
-    const update_Data = { comments: comments };
+    comments.push(new_comment);
+    const update_Data = { comment_cnt: comment_cnt + 1, comments: comments };
     postDB.doc(id).update(update_Data);
 
     dispatch(addComment());
+  };
+};
+
+const changeApplied = () => {
+  return function (dispatch, getState, { history }) {
+    dispatch(changed());
+  };
+};
+
+const autoScroll = (value) => {
+  return function (dispatch, getState, { history }) {
+    dispatch(scroll(value));
   };
 };
 
@@ -142,7 +157,7 @@ const addPostFB = (contents = "") => {
       .then((doc) => {
         let post = { user_info, ..._post, id: doc.id };
         dispatch(addPost(post));
-        history.replace("/");
+        history.push("/");
       })
       .catch((err) => {
         console.log("post write error!", err);
@@ -158,6 +173,7 @@ export default handleActions(
         draft.list.push(...action.payload.post_list);
         draft.paging = action.payload.paging;
         draft.is_loading = false;
+        draft.postCommentList = true;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -170,10 +186,20 @@ export default handleActions(
     [SETPOSTWITHID]: (state, action) =>
       produce(state, (draft) => {
         draft.post_with_id = action.payload.post;
+        draft.postCommentList = false;
       }),
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
         draft.changed = true;
+      }),
+    [CHANGED]: (state, action) =>
+      produce(state, (draft) => {
+        draft.changed = false;
+      }),
+    [SCROLL]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("scroll change", action.payload.value);
+        draft.prevScroll = action.payload.value;
       }),
   },
   initialState
@@ -186,5 +212,7 @@ const actionCreators = {
   loading,
   getPostWithID,
   addPostComment,
+  changeApplied,
+  autoScroll,
 };
 export { actionCreators };

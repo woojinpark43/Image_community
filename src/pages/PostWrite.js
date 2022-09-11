@@ -9,6 +9,8 @@ const PostWrite = (props) => {
   const dispatch = useDispatch();
   const preview = useSelector((state) => state.image.preview);
 
+  console.log(preview);
+
   const addPost = () => {
     dispatch(postActions.addPostFB(contents));
   };
@@ -44,6 +46,7 @@ const PostWrite = (props) => {
           _onChange={changeContents}
           label="Post Context"
           placeholder="Write Context"
+          value={contents}
           multiLine
         />
       </Grid>

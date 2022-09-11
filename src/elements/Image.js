@@ -29,8 +29,8 @@ Image.defaultProps = {
 };
 
 const AspectOutter = styled.div`
-  width: 100%;
-  min-width: 250px;
+  min-width: 100%;
+  min-height: 100%;
 `;
 
 const AspectInner = styled.div`
@@ -48,7 +48,7 @@ const ImageCircle = styled.div`
   border-radius: var(--size);
   background-image: url("${(props) => props.src}");
   background-size: cover;
-  margin: 4px;
+  margin: 2px;
 `;
 
 export default Image;

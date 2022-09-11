@@ -1,5 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
+import moment from "moment/moment";
 import { storage } from "../../shared/firebase";
 // actions
 const UPLOADING = "UPLOADING";
@@ -14,7 +15,8 @@ const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
 function uploadImageFB(image) {
   return function (dispatch, getState, { history }) {
     dispatch(uploading(true));
-    const _upload = storage.ref(`images/${image.name}`).put(image);
+    const time = moment().format("YYYY-MM-DD hh:mm:ss");
+    const _upload = storage.ref(`images/${image.name}${time}`).put(image);
     _upload
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((url) => {

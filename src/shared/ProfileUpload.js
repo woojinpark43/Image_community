@@ -1,28 +1,36 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as imageActions } from "../redux/modules/image";
-const Upload = (props) => {
+import { actionCreators as profileActions } from "../redux/modules/profile";
+const ProfileUpload = (props) => {
   const dispatch = useDispatch();
-  const uploading = useSelector((state) => state.image.uploading);
+  const uploading = useSelector((state) => state.profile.uploading);
+  const uid = useSelector((state) => state.user.user.uid);
   const fileInput = React.useRef();
 
+  React.useEffect(() => {
+    dispatch(profileActions.checkProfile(uid));
+  }, []);
+
   const selectFile = (e) => {
+    console.log("this is file input");
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      dispatch(imageActions.setPreview(reader.result));
+      dispatch(profileActions.profileSetPreview(reader.result));
     };
-    uploadFB();
+    uploadToFB();
   };
 
-  const uploadFB = () => {
+  const uploadToFB = () => {
     if (!fileInput.current || fileInput.current.files.length === 0) {
       window.alert("choose a file");
       return;
     }
     console.log("this is file input", fileInput);
-    dispatch(imageActions.uploadImageFB(fileInput.current.files[0]));
+    dispatch(
+      profileActions.profileUploadImageFB(uid, fileInput.current.files[0])
+    );
   };
   return (
     <React.Fragment>
@@ -36,4 +44,4 @@ const Upload = (props) => {
     </React.Fragment>
   );
 };
-export default Upload;
+export default ProfileUpload;

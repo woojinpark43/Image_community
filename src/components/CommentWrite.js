@@ -2,13 +2,14 @@ import React from "react";
 import { Grid, Input, Button } from "../elements";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
+import Permit from "../shared/Permit";
 import moment from "moment";
 
 const CommentWrite = (props) => {
   const dispatch = useDispatch();
   const user_info = useSelector((state) => state.user.user);
 
-  const { comments, postID } = props;
+  const { comments, postID, comment_cnt } = props;
   const [comment, setComment] = React.useState("");
 
   const submit_comment = () => {
@@ -24,7 +25,7 @@ const CommentWrite = (props) => {
       user_profile: user_info.user_profile,
     };
 
-    dispatch(postActions.addPostComment(postID, commentData, comments));
+    dispatch(postActions.addPostComment(postID, comment_cnt, commentData, comments));
     setComment("");
   };
 
@@ -34,25 +35,27 @@ const CommentWrite = (props) => {
 
   return (
     <React.Fragment>
-      <Grid padding="16px" is_flex>
-        <Input
-          _onChange={(e) => {
-            onChange(e);
-          }}
-          placeholder="write a comment... :)"
-          value={comment}
-          onSubmit={submit_comment}
-          is_submit
-        />
+      <Permit>
+        <Grid padding="16px" is_flex>
+          <Input
+            _onChange={(e) => {
+              onChange(e);
+            }}
+            placeholder="write a comment... :)"
+            value={comment}
+            onSubmit={submit_comment}
+            is_submit
+          />
 
-        <Button
-          width="50px"
-          margin="0px 16px 0px 2px"
-          _onClick={submit_comment}
-        >
-          add
-        </Button>
-      </Grid>
+          <Button
+            width="50px"
+            margin="0px 16px 0px 2px"
+            _onClick={submit_comment}
+          >
+            add
+          </Button>
+        </Grid>
+      </Permit>
     </React.Fragment>
   );
 };

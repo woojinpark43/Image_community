@@ -29,7 +29,6 @@ const loginFB = (id, pwd) => {
       auth
         .signInWithEmailAndPassword(id, pwd)
         .then((user) => {
-          console.log(user);
 
           dispatch(
             setUser({
