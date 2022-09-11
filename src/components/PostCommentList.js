@@ -40,7 +40,7 @@ const CommentItem = (props) => {
       </Grid>
       <Grid is_flex margin="0px 4px">
         <Text margin="0px">{contents}</Text>
-        <Text margin="0px">{insert_dt}</Text>
+        <Text text_align="right" margin="15px">{insert_dt}</Text>
       </Grid>
     </Grid>
   );

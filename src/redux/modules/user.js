@@ -6,6 +6,7 @@ import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 import { auth } from "../../shared/firebase";
 import firebase from "firebase/compat/app";
 import profile from "../../img/profile.png";
+import { actionCreators as PostActions } from "./post";
 
 // actions
 const LOG_OUT = "LOG_OUT";
@@ -30,7 +31,6 @@ const loginFB = (id, pwd) => {
       auth
         .signInWithEmailAndPassword(id, pwd)
         .then((user) => {
-
           dispatch(
             setUser({
               user_name: user.user.displayName,
@@ -58,7 +58,6 @@ const signupFB = (id, pwd, user_name) => {
       auth
         .createUserWithEmailAndPassword(id, pwd)
         .then((user) => {
-
           auth.currentUser
             .updateProfile({
               displayName: user_name,
@@ -115,6 +114,7 @@ const logoutFB = () => {
   return function (dispatch, getState, { history }) {
     auth.signOut().then(() => {
       dispatch(logOut());
+      PostActions.triggerChanged();
       history.replace("/");
     });
   };

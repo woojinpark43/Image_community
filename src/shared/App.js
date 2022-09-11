@@ -70,7 +70,7 @@ function App() {
           background="none"
           is_float
           bottom="115px"
-          left={isMobile ? "85%" : "70%"}
+          left={isMobile ? "80%" : "70%"}
           _onClick={() => {
             history.push("/write");
           }}
@@ -81,7 +81,7 @@ function App() {
       <Button
         background="none"
         is_float
-        left={isMobile ? "85%" : "70%"}
+        left={isMobile ? "80%" : "70%"}
         bottom="50px"
         _onClick={() => {
           history.push("/");

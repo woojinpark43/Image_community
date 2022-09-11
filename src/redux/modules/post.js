@@ -11,6 +11,7 @@ const SETPOSTWITHID = "SETPOSTWITHID";
 const ADD_COMMENT = "ADD_COMMENT";
 const CHANGED = "CHANGED";
 const SCROLL = "SCROLL";
+const TRIGGER_CHANGED = "TRIGGER_CHANGED";
 
 const setPost = createAction(SET_POST, (post_list, paging) => ({
   post_list,
@@ -22,6 +23,7 @@ const loading = createAction(LOADING, (loading) => ({ loading }));
 const addComment = createAction(ADD_COMMENT, () => ({}));
 const changed = createAction(CHANGED, () => ({}));
 const scroll = createAction(SCROLL, (value) => ({ value }));
+const triggerChanged = createAction(TRIGGER_CHANGED, () => ({}));
 
 const initialState = {
   list: [],
@@ -204,6 +206,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.changed = false;
       }),
+    [TRIGGER_CHANGED]: (state, action) =>
+      produce(state, (draft) => {
+        draft.changed = true;
+      }),
     [SCROLL]: (state, action) =>
       produce(state, (draft) => {
         console.log("scroll change", action.payload.value);
@@ -222,5 +228,6 @@ const actionCreators = {
   addPostComment,
   changeApplied,
   autoScroll,
+  triggerChanged,
 };
 export { actionCreators };
