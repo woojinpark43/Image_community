@@ -8,9 +8,13 @@ import CommentWrite from "../components/CommentWrite";
 
 const PostDetail = (props) => {
   const dispatch = useDispatch();
+  // const paging = useSelector((state) => state.post.paging);
+  const list = useSelector((state) => state.post.list);
   const post = useSelector((state) => state.post.post_with_id);
   const changed = useSelector((state) => state.post.changed);
   const postId = window.location.href.split("/").at(-1);
+
+  console.log(list);
 
   React.useEffect(() => {
     dispatch(postActions.getPostWithID(postId));

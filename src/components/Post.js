@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Image, Text } from "../elements";
 import { firestore } from "../shared/firebase";
 import PostCommentList from "./PostCommentList";
+import profile from "../img/profile.png";
 
 const Post = (props) => {
   const [comments, setComments] = React.useState([]);
@@ -20,7 +21,8 @@ const Post = (props) => {
   React.useEffect(() => {
     handleComments();
     console.log(props);
-    getProfileURL(props.user_info.user_id);
+    const user_id = props.user_id ? props.user_id : props.user_info.user_id;
+    getProfileURL(user_id);
   }, []);
 
   const [URL, setURL] = React.useState("");
@@ -64,12 +66,12 @@ const Post = (props) => {
 
 Post.defaultProps = {
   user_info: {
-    user_name: "mean0",
-    user_profile: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
+    user_name: "",
+    user_profile: profile,
   },
-  image_url: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
-  contents: "고양이네요!",
-  comment_cnt: 10,
+  image_url: profile,
+  contents: "",
+  comment_cnt: 0,
   insert_dt: "2021-02-27 10:00:00",
 };
 

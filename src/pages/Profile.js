@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Text, Button, Image, Input } from "../elements";
 import { useSelector, useDispatch } from "react-redux";
 import ProfileUpload from "../shared/ProfileUpload";
+import profile from "../img/profile.png";
 
 const Profile = (props) => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Profile = (props) => {
           <Image
             size={250}
             shape="circle"
-            src={preview ? preview : "http://via.placeholder.com/150x150"}
+            src={preview ? preview : profile}
           />
         </Grid>
       </Grid>

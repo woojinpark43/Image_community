@@ -5,6 +5,7 @@ import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 
 import { auth } from "../../shared/firebase";
 import firebase from "firebase/compat/app";
+import profile from "../../img/profile.png";
 
 // actions
 const LOG_OUT = "LOG_OUT";
@@ -34,7 +35,7 @@ const loginFB = (id, pwd) => {
             setUser({
               user_name: user.user.displayName,
               id: id,
-              user_profile: "",
+              user_profile: user.user.user_profile,
               uid: user.user.uid,
             })
           );
@@ -67,7 +68,7 @@ const signupFB = (id, pwd, user_name) => {
                 setUser({
                   user_name: user_name,
                   id: id,
-                  user_profile: "",
+                  user_profile: profile,
                   uid: user.user.uid,
                 })
               );

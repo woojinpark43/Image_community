@@ -2,6 +2,8 @@ import { createAction, handleActions } from "redux-actions";
 import moment from "moment/moment";
 import { produce } from "immer";
 import { firestore } from "../../shared/firebase";
+import profile from "../../img/profile.png";
+
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const LOADING = "LOADING";
@@ -32,9 +34,9 @@ const initialState = {
 };
 
 const initialPost = {
-  image_url: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
-  contents: "고양이네요!",
-  comment_cnt: 10,
+  image_url: profile,
+  contents: "",
+  comment_cnt: 0,
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
 };
 
@@ -116,9 +118,14 @@ const addPostComment = (id, comment_cnt, new_comment, prevComment) => {
     let comments = [...prevComment];
     comments.push(new_comment);
     const update_Data = { comment_cnt: comment_cnt + 1, comments: comments };
-    postDB.doc(id).update(update_Data);
-
-    dispatch(addComment());
+    postDB
+      .doc(id)
+      .update(update_Data)
+      .then((docs) => {
+        dispatch(addComment());
+        const list_size = getState().post.list.size;
+        getPostFB(null, list_size);
+      });
   };
 };
 
