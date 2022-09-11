@@ -14,8 +14,6 @@ const PostDetail = (props) => {
   const changed = useSelector((state) => state.post.changed);
   const postId = window.location.href.split("/").at(-1);
 
-  console.log(list);
-
   React.useEffect(() => {
     dispatch(postActions.getPostWithID(postId));
   }, []);

@@ -71,7 +71,6 @@ function App() {
           is_float
           bottom="50px"
           _onClick={() => {
-            console.log("re ender pushed");
             history.push("/");
           }}
         >

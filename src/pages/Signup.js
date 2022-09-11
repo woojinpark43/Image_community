@@ -15,17 +15,19 @@ const Signup = (props) => {
 
   const signup = () => {
     if (id === "" || pwd === "" || user_name === "") {
-      window.alert("아이디, 패스워드, 닉네임을 모두 입력해주세요!");
+      window.alert("Type e-mail, user name and password");
       return;
     }
 
-    if(!emailCheck(id)){
-      window.alert('이메일 형식이 맞지 않습니다!');
+    if (!emailCheck(id)) {
+      window.alert("Type e-mail correctly ex) 123@gmail.com");
       return;
     }
-    
+
     if (pwd !== pwd_check) {
-      window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
+      window.alert(
+        "You typed second password differently. Please type same password."
+      );
       return;
     }
 
@@ -35,13 +37,13 @@ const Signup = (props) => {
     <React.Fragment>
       <Grid padding="16px">
         <Text size="32px" bold>
-          회원가입
+          Singup
         </Text>
 
         <Grid padding="16px 0px">
           <Input
-            label="아이디"
-            placeholder="아이디를 입력해주세요."
+            label="E-mail"
+            placeholder="Enter email ex)123@gmail.com ..."
             _onChange={(e) => {
               setId(e.target.value);
             }}
@@ -50,8 +52,8 @@ const Signup = (props) => {
 
         <Grid padding="16px 0px">
           <Input
-            label="닉네임"
-            placeholder="닉네임을 입력해주세요."
+            label="User name"
+            placeholder="Enter user name ex) user1 ..."
             _onChange={(e) => {
               setUserName(e.target.value);
             }}
@@ -60,8 +62,8 @@ const Signup = (props) => {
 
         <Grid padding="16px 0px">
           <Input
-            label="비밀번호"
-            placeholder="비밀번호를 입력해주세요."
+            label="Password"
+            placeholder="Enter Password ..."
             _onChange={(e) => {
               setPwd(e.target.value);
             }}
@@ -70,15 +72,15 @@ const Signup = (props) => {
 
         <Grid padding="16px 0px">
           <Input
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 입력해주세요."
+            label="Re-enter password"
+            placeholder="Re-enter password"
             _onChange={(e) => {
               setPwdCheck(e.target.value);
             }}
           />
         </Grid>
 
-        <Button text="회원가입하기" _onClick={signup}></Button>
+        <Button text="Singup" _onClick={signup}></Button>
       </Grid>
     </React.Fragment>
   );

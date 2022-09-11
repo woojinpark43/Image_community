@@ -117,6 +117,7 @@ const addPostComment = (id, comment_cnt, new_comment, prevComment) => {
     const postDB = firestore.collection("post");
     let comments = [...prevComment];
     comments.push(new_comment);
+    console.log(id, comment_cnt, new_comment, prevComment);
     const update_Data = { comment_cnt: comment_cnt + 1, comments: comments };
     postDB
       .doc(id)

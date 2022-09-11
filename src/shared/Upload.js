@@ -21,7 +21,6 @@ const Upload = (props) => {
       window.alert("choose a file");
       return;
     }
-    console.log("this is file input", fileInput);
     dispatch(imageActions.uploadImageFB(fileInput.current.files[0]));
   };
   return (

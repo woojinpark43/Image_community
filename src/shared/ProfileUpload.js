@@ -12,7 +12,6 @@ const ProfileUpload = (props) => {
   }, []);
 
   const selectFile = (e) => {
-    console.log("this is file input");
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.readAsDataURL(file);
@@ -27,7 +26,6 @@ const ProfileUpload = (props) => {
       window.alert("choose a file");
       return;
     }
-    console.log("this is file input", fileInput);
     dispatch(
       profileActions.profileUploadImageFB(uid, fileInput.current.files[0])
     );

@@ -33,7 +33,7 @@ function profileUploadImageFB(id, image) {
             .doc(id)
             .set({ profile_image: url })
             .then((doc) => {
-              console.log("upload profile pic");
+              // console.log("upload profile pic");
             })
             .catch((err) => {
               console.log("post write error!", err);

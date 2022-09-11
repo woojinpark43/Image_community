@@ -20,8 +20,8 @@ const Post = (props) => {
 
   React.useEffect(() => {
     handleComments();
-    console.log(props);
-    const user_id = props.user_id ? props.user_id : props.user_info.user_id;
+    const user_id =
+      props.user_id === undefined ? props.user_info.user_id : props.user_id;
     getProfileURL(user_id);
   }, []);
 

@@ -47,7 +47,6 @@ const PostList = (props) => {
               margin="8px 0px"
               key={p.id}
               _onClick={() => {
-                console.log(scrollY);
                 dispatch(postActions.autoScroll(scrollY));
                 history.push(`/post/${p.id}`);
               }}
