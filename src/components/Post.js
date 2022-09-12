@@ -5,6 +5,7 @@ import PostCommentList from "./PostCommentList";
 import profile from "../img/profile.png";
 
 const Post = (props) => {
+  const { profileID } = props;
   const [comments, setComments] = React.useState([]);
   const handleComments = () => {
     const comments = props.comments;
@@ -19,11 +20,10 @@ const Post = (props) => {
   };
 
   React.useEffect(() => {
+    console.log("post", props);
     handleComments();
-    const user_id =
-      props.user_id === undefined ? props.user_info.user_id : props.user_id;
-    getProfileURL(user_id);
-  }, []);
+    getProfileURL(profileID);
+  }, [profileID]);
 
   const [URL, setURL] = React.useState("");
 
@@ -49,7 +49,11 @@ const Post = (props) => {
         <Grid is_flex padding="16px">
           <Grid is_flex width="auto">
             <Image shape="circle" src={URL} />
-            <Text bold>{props.user_info.user_name}</Text>
+            <Text bold>
+              {props.user_name === undefined
+                ? props.user_info.user_name
+                : props.user_name}
+            </Text>
           </Grid>
           <Grid is_flex width="auto">
             <Text>{props.insert_dt}</Text>

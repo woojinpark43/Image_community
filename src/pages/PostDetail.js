@@ -28,7 +28,7 @@ const PostDetail = (props) => {
   if (post !== null) {
     return (
       <React.Fragment>
-        <Post {...post} />
+        <Post {...post} profileID={post.user_id} />
         <Grid>
           <Text margin="0px" bold>
             {post.comments.length} comments
