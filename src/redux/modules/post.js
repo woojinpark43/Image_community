@@ -5,6 +5,7 @@ import { firestore } from "../../shared/firebase";
 import profile from "../../img/profile.png";
 
 const SET_POST = "SET_POST";
+const RESET_POST = "RESET_POST";
 const ADD_POST = "ADD_POST";
 const LOADING = "LOADING";
 const SETPOSTWITHID = "SETPOSTWITHID";
@@ -14,6 +15,10 @@ const SCROLL = "SCROLL";
 const TRIGGER_CHANGED = "TRIGGER_CHANGED";
 
 const setPost = createAction(SET_POST, (post_list, paging) => ({
+  post_list,
+  paging,
+}));
+const resetPost = createAction(RESET_POST, (post_list, paging) => ({
   post_list,
   paging,
 }));
@@ -119,15 +124,45 @@ const addPostComment = (id, comment_cnt, new_comment, prevComment) => {
     const postDB = firestore.collection("post");
     let comments = [...prevComment];
     comments.push(new_comment);
-    console.log(id, comment_cnt, new_comment, prevComment);
     const update_Data = { comment_cnt: comment_cnt + 1, comments: comments };
     postDB
       .doc(id)
       .update(update_Data)
       .then((docs) => {
         dispatch(addComment());
-        const list_size = getState().post.list.size;
-        getPostFB(null, list_size);
+        const list_size = getState().post.list.length;
+        let _paging = getState().post.paging;
+
+        dispatch(loading(true));
+
+        const postDB = firestore.collection("post");
+        let query = postDB.orderBy("insert_dt", "desc");
+
+        query
+          .limit(list_size)
+          .get()
+          .then((docs) => {
+            let post_list = [];
+            docs.forEach((doc) => {
+              let _post = doc.data();
+              let post = {
+                id: doc.id,
+                user_info: {
+                  user_name: _post.user_name,
+                  user_profile: _post.user_profile,
+                  user_id: _post.user_id,
+                },
+                contents: _post.contents,
+                image_url: _post.image_url,
+                comment_cnt: _post.comment_cnt,
+                insert_dt: _post.insert_dt,
+                comments: [..._post.comments],
+              };
+              post_list.push(post);
+            });
+
+            dispatch(resetPost(post_list, _paging));
+          });
       });
   };
 };
@@ -185,6 +220,13 @@ export default handleActions(
         draft.is_loading = false;
         draft.postCommentList = true;
       }),
+    [RESET_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = action.payload.post_list;
+        draft.paging = action.payload.paging;
+        draft.is_loading = false;
+        draft.postCommentList = true;
+      }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list.unshift(action.payload.post);
@@ -212,7 +254,6 @@ export default handleActions(
       }),
     [SCROLL]: (state, action) =>
       produce(state, (draft) => {
-        console.log("scroll change", action.payload.value);
         draft.prevScroll = action.payload.value;
       }),
   },
