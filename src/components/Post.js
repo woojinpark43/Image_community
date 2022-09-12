@@ -37,6 +37,9 @@ const Post = (props) => {
         let data = docs.data();
         const url = data.profile_image;
         setURL(url);
+      })
+      .catch((err) => {
+        setURL(profile);
       });
   };
 

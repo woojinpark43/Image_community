@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
 import moment from "moment/moment";
 import { storage, firestore } from "../../shared/firebase";
+import profile from "../../img/profile.png";
 
 // actions
 const PROFILE_UPLOADING = "PROFILE_UPLOADING";
@@ -58,6 +59,9 @@ const checkProfile = (id) => {
         const url = data.profile_image;
 
         dispatch(profileSetPreview(url));
+      })
+      .catch((err) => {
+        dispatch(profileSetPreview(profile));
       });
   };
 };
